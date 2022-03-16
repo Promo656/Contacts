@@ -3,8 +3,38 @@ package com.company;
 import java.lang.reflect.Field;
 import java.util.*;
 
-abstract class AbstractActions {
-    abstract void addAction();
+class ContactBook {
+    UUID id = UUID.randomUUID();
+    ArrayList<ContactBook> list = new ArrayList<>();
+    Scanner scanner = new Scanner(System.in);
+
+    void setList(ContactBook contact) {
+        this.list.add(contact);
+    }
+
+    void showList() {
+        if (this.list.size() != 0) {
+            for (ContactBook element : this.list) {
+                System.out.println(element);
+            }
+
+            System.out.println("Enter index to show info: ");
+            int record = scanner.nextInt();
+//            contacts.showMemberInfo(record);
+        } else {
+            System.out.println("No records to show!");
+        }
+    }
+
+    void getList() {
+        for (ContactBook element : this.list) {
+            System.out.println(element);
+        }
+    }
+
+    protected void exit() {
+        System.out.println("Good buy");
+    }
 
 }
 
@@ -15,42 +45,66 @@ public class Main {
     }
 }
 
-class Actions extends AbstractActions {
+class Actions extends ContactBook {
     Scanner scanner = new Scanner(System.in);
+    Contact contact = new Contact();
+    Organization organization = new Organization();
 
     void addAction() {
+        System.out.print("Enter the type (person, organization): ");
+        String type = scanner.next();
+        switch (type) {
+            case "org" -> {
+                organization.addAction();
+                this.showAction();
+            }
+            case "person" -> {
+                contact.addAction();
+                this.showAction();
+            }
+            default -> {
+                System.out.println("Uncorrected action");
+                this.showAction();
+            }
+        }
+    }
+
+    void infoAction() {
+        showList();
+        this.showAction();
+    }
+
+    void exitAction() {
+        exit();
+    }
+
+    void removeAction() {
         Contact contact = new Contact();
-        contact.addAction();
+        Organization organization = new Organization();
+        System.out.print("Enter the type (person, organization): ");
+        String type = scanner.next();
+        switch (type) {
+            case "organization" -> organization.removeAction();
+            case "person" -> contact.removeAction();
+        }
     }
 
     public void showAction() {
-        Contact contact = new Contact();
+        System.out.println(" ");
         System.out.print("Enter action (add, remove, edit, count, info, exit): ");
         String action = scanner.next();
 
         switch (action) {
-            case "add":
-                addAction();
-                break;
-            case "remove":
-                contact.removeAction();
-                break;
-            case "count":
-                contact.countAction();
-                break;
-            case "info":
-                contact.infoAction();
-                break;
-            case "edit":
-                contact.editAction();
-                break;
-            case "exit":
-                contact.exit();
-                break;
-            default:
+            case "add" -> addAction();
+//            case "remove" -> contact.removeAction();
+//            case "count" -> contact.countAction();
+            case "info" -> infoAction();
+//            case "edit" -> contact.editAction();
+            case "exit" -> exitAction();
+            default -> {
                 System.out.println("Uncorrected action");
                 this.showAction();
-                break;
+            }
         }
     }
 }
@@ -66,6 +120,20 @@ class Organizations {
         this.organizations.add(organization);
     }
 
+    public int getCounts() {
+        return this.organizations.size();
+    }
+
+    public void showOrganizationList() {
+        for (Organization element : this.organizations) {
+            System.out.println(this.organizations.indexOf(element) + 1 + ". " + element.getName() + " " + element.getAddress() + ", " + element.getNumber());
+        }
+    }
+
+    public void removeOrganization(int index) {
+        this.organizations.remove(index - 1);
+    }
+
     public static Organizations getInstance() {
         if (instance == null) {
             return new Organizations();
@@ -74,15 +142,19 @@ class Organizations {
     }
 }
 
-class Organization {
+class Organization extends ContactBook {
+    private UUID id;
     private String name;
     private String address;
     private String number;
 
-    public Actions actions = new Actions();
     Scanner scanner = new Scanner(System.in);
 
+    Organization() {
+    }
+
     Organization(String name, String address, String number) {
+        this.id = UUID.randomUUID();
         this.name = name;
         this.address = address;
         this.number = number;
@@ -92,12 +164,24 @@ class Organization {
         this.name = name;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
 
+    public String getAddress() {
+        return this.address;
+    }
+
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getNumber() {
+        return this.number;
     }
 
     public void addAction() {
@@ -113,10 +197,22 @@ class Organization {
         System.out.println("Enter the number:");
         this.setNumber(scanner.nextLine());
 
-        organizations.setOrganization(new Organization(this.name, this.address, this.number));
+        setList(new Organization(this.name, this.address, this.number));
 
         System.out.println("A record created!");
-        this.actions.showAction();
+    }
+
+    public void removeAction() {
+        Organizations organizations = Organizations.getInstance();
+
+        if (organizations.getCounts() != 0) {
+            organizations.showOrganizationList();
+            System.out.print("Select a record: ");
+            organizations.removeOrganization(scanner.nextInt());
+            System.out.println("The record removed!");
+        } else {
+            System.out.println("No records to remove!");
+        }
     }
 }
 
@@ -133,12 +229,7 @@ class Contacts {
 
     public void showContactList() {
         for (Contact element : this.contacts) {
-            System.out.println(this.contacts.indexOf(element) + 1 + ". " +
-                    element.getFirstName() + " " +
-                    element.getLastName() + ", " +
-                    element.getBirth() + ", " +
-                    element.getGender() + ", " +
-                    element.getNumber());
+            System.out.println(this.contacts.indexOf(element) + 1 + ". " + element.getFirstName() + " " + element.getLastName() + ", " + element.getBirth() + ", " + element.getGender() + ", " + element.getNumber());
         }
     }
 
@@ -198,20 +289,21 @@ class Contacts {
     }
 }
 
-class Contact {
+class Contact extends ContactBook {
+    private UUID id;
     private String firstName;
     private String lastName;
     private String birth;
     private String gender;
     private String number;
 
-    Actions actions = new Actions();
     Scanner scanner = new Scanner(System.in);
 
     Contact() {
     }
 
     public Contact(String firstName, String lastName, String birth, String gender, String number) {
+        this.id = UUID.randomUUID();
         this.firstName = firstName;
         this.lastName = lastName;
         this.birth = birth;
@@ -287,13 +379,7 @@ class Contact {
         return this.getClass().getDeclaredFields();
     }
 
-    public void exit() {
-        System.out.println("Good buy");
-    }
-
     public void addAction() {
-        Contacts contacts = Contacts.getInstance();
-
         System.out.println("Enter the name of the person:");
         this.setFirstName(scanner.nextLine());
 
@@ -309,10 +395,9 @@ class Contact {
         System.out.println("Enter the number:");
         this.setNumber(scanner.nextLine());
 
-        contacts.setContact(new Contact(this.firstName, this.lastName, this.birth, this.gender, this.number));
+        setList(new Contact(this.firstName, this.lastName, this.birth, this.gender, this.number));
 
         System.out.println("A record created!");
-        this.actions.showAction();
     }
 
     public void removeAction() {
@@ -326,19 +411,17 @@ class Contact {
         } else {
             System.out.println("No records to remove!");
         }
-        this.actions.showAction();
     }
 
     public void countAction() {
         Contacts contacts = Contacts.getInstance();
         System.out.println("The Phone Book has " + contacts.getCounts() + " records.");
-        this.actions.showAction();
     }
 
     public void infoAction() {
         Contacts contacts = Contacts.getInstance();
-        if (contacts.getCounts() != 0) {
-            contacts.showContactList();
+        if (this.list.size() != 0) {
+            getList();
 
             System.out.println("Enter index to show info: ");
             int record = scanner.nextInt();
@@ -346,7 +429,6 @@ class Contact {
         } else {
             System.out.println("No records to show!");
         }
-        this.actions.showAction();
     }
 
     public void editAction() {
@@ -364,6 +446,5 @@ class Contact {
         } else {
             System.out.println("No records to edit!");
         }
-        this.actions.showAction();
     }
 }
