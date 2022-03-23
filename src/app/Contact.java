@@ -3,14 +3,16 @@ package app;
 import java.time.LocalDateTime;
 
 abstract class Contact {
-    String name;
-    String phoneNumber;
-    LocalDateTime timeCreated;
-    LocalDateTime timeLastEdit;
+    private String name;
+    private String phoneNumber;
+    private final LocalDateTime timeCreated;
+    private LocalDateTime timeLastEdit;
 
     Contact(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;
+        this.timeCreated = LocalDateTime.now();
+        this.timeLastEdit = LocalDateTime.now();
     }
 
 
@@ -20,6 +22,7 @@ abstract class Contact {
 
     public void setName(String name) {
         this.name = name;
+        this.timeLastEdit = LocalDateTime.now();
     }
 
     public String getPhoneNumber() {
@@ -28,6 +31,7 @@ abstract class Contact {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+        this.timeLastEdit = LocalDateTime.now();
     }
 
     public LocalDateTime getTimeCreated() {

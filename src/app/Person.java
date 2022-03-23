@@ -37,4 +37,15 @@ class Person extends Contact {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    public String toString() {
+        String birthDate = getBirthDate() == null ? "[no data]" : getBirthDate().toString();
+        return "Name: " + getName() + "\n" +
+                "Surname: " + getSurname() + "\n" +
+                "Birth date: " + birthDate + "\n" +
+                "Gender: " + getGender() + "\n" +
+                "Number: " + getPhoneNumber() + "\n" +
+                "Time created: " + getTimeCreated() + "\n" +
+                "Time last edit: " + getTimeLastEdit();
+    }
 }

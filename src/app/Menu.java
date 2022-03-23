@@ -19,8 +19,17 @@ class Menu {
                 case "add":
                     actions.addAction();
                     break;
+                case "remove":
+                    actions.removeAction();
+                    break;
+                case "edit":
+                    actions.editeAction();
+                    break;
                 case "count":
                     actions.countAction();
+                    break;
+                case "info":
+                    actions.infoAction();
                     break;
                 case "exit":
                     actions.exitAction();
