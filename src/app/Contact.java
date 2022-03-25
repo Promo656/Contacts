@@ -11,8 +11,8 @@ abstract class Contact {
     Contact(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.timeCreated = LocalDateTime.now();
-        this.timeLastEdit = LocalDateTime.now();
+        this.timeCreated = LocalDateTime.now().withSecond(0).withNano(0);
+        this.timeLastEdit = LocalDateTime.now().withSecond(0).withNano(0);
     }
 
 
@@ -22,7 +22,7 @@ abstract class Contact {
 
     public void setName(String name) {
         this.name = name;
-        this.timeLastEdit = LocalDateTime.now();
+        this.timeLastEdit = LocalDateTime.now().withSecond(0).withNano(0);
     }
 
     public String getPhoneNumber() {
@@ -31,10 +31,10 @@ abstract class Contact {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-        this.timeLastEdit = LocalDateTime.now();
+        this.timeLastEdit = LocalDateTime.now().withSecond(0).withNano(0);
     }
 
-    public LocalDateTime getTimeCreated() {
+    protected LocalDateTime getTimeCreated() {
         return timeCreated;
     }
 

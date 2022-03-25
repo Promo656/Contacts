@@ -6,9 +6,7 @@ import java.util.regex.Pattern;
 
 public class Validator {
 
-    private final static Pattern phoneNumberPattern = Pattern.compile("\\+?((\\([0-9A-Za-z]+\\)|[0-9A-Za-z]+)|" +
-            "([0-9A-Za-z]+[ -]\\([0-9A-Za-z]{2,}\\))|" +
-            "[0-9A-Za-z]+[ -][0-9A-Za-z]{2,})([ -][0-9A-Za-z]{2,}[ -]?)*");
+    private final static Pattern phoneNumberPattern = Pattern.compile("\\+?((\\([0-9A-Za-z]+\\)|[0-9A-Za-z]+)|" + "([0-9A-Za-z]+[ -]\\([0-9A-Za-z]{2,}\\))|" + "[0-9A-Za-z]+[ -][0-9A-Za-z]{2,})([ -][0-9A-Za-z]{2,}[ -]?)*");
 
     public static String checkGender(String gender) {
         String regexp = "(M|F)";
@@ -43,17 +41,34 @@ public class Validator {
         String regexp = "(name|address|number)";
         if (field.matches(regexp)) {
             return field;
-        } else {
-            return null;
-        }
+        } else return null;
     }
 
     public static String checkPersonField(String field) {
         String regexp = "(name|surname|birth|gender|number)";
         if (field.matches(regexp)) {
             return field;
-        } else {
-            return null;
-        }
+        } else return null;
+    }
+
+    public static String checkSearchMenuField(String field) {
+        String regexp = "([0-9]+|back|again)";
+        if (field.matches(regexp)) {
+            return field;
+        } else return null;
+    }
+
+    public static String checkRecordMenuField(String field) {
+        String regexp = "(edit|delete|menu)";
+        if (field.matches(regexp)) {
+            return field;
+        } else return null;
+    }
+
+    public static String checkListMenuField(String field) {
+        String regexp = "([0-9]+|back)";
+        if (field.matches(regexp)) {
+            return field;
+        } else return null;
     }
 }
