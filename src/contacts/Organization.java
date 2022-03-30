@@ -1,4 +1,4 @@
-package app;
+package contacts;
 
 class Organization extends Contact {
     String address;

@@ -1,4 +1,4 @@
-package app;
+package contacts;
 
 import java.util.Scanner;
 
@@ -16,15 +16,23 @@ class Menu {
             System.out.print("\n[menu] Enter action (add, list, search, count, exit): ");
             String type = scanner.next();
             switch (type) {
-                case "add" -> actions.addAction();
-                case "list" -> listMenu();
-                case "search" -> searchMenu();
-                case "count" -> actions.countAction();
-                case "exit" -> {
+                case "add":
+                    actions.addAction();
+                    break;
+                case "list":
+                    listMenu();
+                    break;
+                case "search":
+                    searchMenu();
+                    break;
+                case "count":
+                    actions.countAction();
+                    break;
+                case "exit":
                     actions.exitAction();
                     return;
-                }
-                default -> System.out.println("Uncorrected action");
+                default:
+                    System.out.println("Uncorrected action");
             }
         }
     }

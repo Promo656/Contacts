@@ -1,4 +1,4 @@
-package app;
+package contacts;
 
 import java.util.ArrayList;
 import java.util.List;
